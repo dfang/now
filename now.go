@@ -342,33 +342,34 @@ func (now *Now) Between(begin, end string) bool {
 }
 
 // IsToday checks if the given time is within today
-func (now *Now) IsToday(t time.Time) bool {
-	beginningOfDay := now.BeginningOfDay()
-	endOfDay := now.EndOfDay()
+func IsToday(t time.Time) bool {
+	n := New(time.Now())
+	beginningOfDay := n.BeginningOfDay()
+	endOfDay := n.EndOfDay()
 	return (t.Equal(beginningOfDay) || t.After(beginningOfDay)) && (t.Equal(endOfDay) || t.Before(endOfDay))
 }
 
 // IsTimestampToday checks if the given Unix timestamp (in seconds, 10 digits) is within today
-func (now *Now) IsTimestampToday(timestamp float64) bool {
+func IsTimestampToday(timestamp float64) bool {
 	t := time.Unix(int64(timestamp), int64((timestamp-float64(int64(timestamp)))*1e9))
-	return now.IsToday(t)
+	return IsToday(t)
 }
 
 // IsMillisecondTimestampToday checks if the given Unix timestamp (in milliseconds, 13 digits) is within today
-func (now *Now) IsMillisecondTimestampToday(timestamp float64) bool {
+func IsMillisecondTimestampToday(timestamp float64) bool {
 	seconds := int64(timestamp / 1000)
 	nanoseconds := int64((timestamp - float64(seconds*1000)) * 1e6)
 	t := time.Unix(seconds, nanoseconds)
-	return now.IsToday(t)
+	return IsToday(t)
 }
 
 // IsWeekend checks if the given time is Saturday or Sunday
-func (now *Now) IsWeekend(t time.Time) bool {
+func IsWeekend(t time.Time) bool {
 	weekday := t.Weekday()
 	return weekday == time.Saturday || weekday == time.Sunday
 }
 
 // IsWeekday checks if the given time is Monday through Friday
-func (now *Now) IsWeekday(t time.Time) bool {
-	return !now.IsWeekend(t)
+func IsWeekday(t time.Time) bool {
+	return !IsWeekend(t)
 }
