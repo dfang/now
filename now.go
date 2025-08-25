@@ -361,3 +361,14 @@ func (now *Now) IsMillisecondTimestampToday(timestamp float64) bool {
 	t := time.Unix(seconds, nanoseconds)
 	return now.IsToday(t)
 }
+
+// IsWeekend checks if the given time is Saturday or Sunday
+func (now *Now) IsWeekend(t time.Time) bool {
+	weekday := t.Weekday()
+	return weekday == time.Saturday || weekday == time.Sunday
+}
+
+// IsWeekday checks if the given time is Monday through Friday
+func (now *Now) IsWeekday(t time.Time) bool {
+	return !now.IsWeekend(t)
+}
